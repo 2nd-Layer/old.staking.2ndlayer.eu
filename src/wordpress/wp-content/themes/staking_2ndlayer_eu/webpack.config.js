@@ -1,5 +1,6 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: './assets/js/index.js',
@@ -29,5 +30,14 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: 'css/[name].bundle.css'
     }),
+        new CopyWebpackPlugin(
+      [
+        {
+          from: './assets/images',
+          to: 'images/',
+          ignore: ['perlur-logo-full-color.png','perlur-logo-mono-white.png','perlur-logo-mono-green.png'],
+        },
+      ]
+    ),
   ]
 };
