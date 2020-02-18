@@ -2,7 +2,7 @@
 
 // 2ⁿᵈ Layer Color Palette
 $blue-dark: #286293;
-$blue-light: 2c77b4
+$blue-light: 2C77B4;
 $gray: #E72D43;
 
 $primary: $blue-dark;
@@ -12,5 +12,5 @@ $subtitle-color: $blue-light;
 // Navbar Variables
 $navbar-item-color: $primary;
 
-@import "../../node_modules/bulma/bulma.sass";
+@import "~bulma/bulma";
 @import "./bulma-megamenu.scss";
