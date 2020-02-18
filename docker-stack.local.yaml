@@ -1,0 +1,39 @@
+version: '3.7'
+
+services:
+  # The reverse proxy service (Træfik)
+  proxy:
+    image: traefik  # The official Traefik docker image
+    command: --api --docker  # Enables the web UI and tells Træfik to listen to docker
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    ports:
+      - "80:80"      # The HTTP port
+      - "443:443"    # The HTTPS port
+      - "8080:8080"  # The Web UI (enabled by --api)
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock  # So that Traefik can listen to the Docker events
+
+  web:
+    image: wordpress
+    deploy:
+      restart_policy:
+        condition: on-failure
+    labels:
+      - "traefik.frontend.rule=Host:staking.2ndlayer.eu.localhost"
+    volumes:
+      - ./src/wordpress/wp-content/themes/:/var/www/html/wp-content/themes/
+      - ./src/wordpress/wp-content/plugins/:/var/www/html/wp-content/plugins/
+    env_file:
+      - .env.local
+
+  db:
+    image: mariadb
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    env_file:
+      - .env.local
